@@ -3,12 +3,17 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public SlideWindow windowScript;
+    public ShiftManager shiftManager;
+
+    //transforms for the camera positions
     public Transform forwardView;
     public Transform leftView;
     public Transform rightView;
 
+    //how fast the camera is moving into positions
     public float lookSpeed = 5f;
 
+    //the target transform the camera is moving towards
     private Transform targetView;
 
 
@@ -35,7 +40,15 @@ public class CameraController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             targetView = rightView;
-            windowScript.canOpen = true;
+
+            if (shiftManager != null && shiftManager.IsShiftActive())
+            {
+                windowScript.canOpen = true;
+            }
+            else
+            {
+                windowScript.canOpen = false;
+            }
         }
 
 

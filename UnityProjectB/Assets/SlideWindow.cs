@@ -16,6 +16,7 @@ public class SlideWindow : MonoBehaviour
     {
         closedPosition = transform.position;
         openPosition = closedPosition + Vector3.up * slideHeight;
+        isOpening = false;
     }
 
     // Update is called once per frame
@@ -24,10 +25,16 @@ public class SlideWindow : MonoBehaviour
         if (canOpen && Input.GetKeyDown(KeyCode.E))
         {
             isOpening = true;
-        }
-        if (isOpening)
+        } 
+        if (isOpening && canOpen)
         {
             transform.position = Vector3.MoveTowards(transform.position, openPosition, slideSpeed * Time.deltaTime);
         }
+    }
+
+    public void CloseWindow()
+    {
+        isOpening = false;
+        transform.position = closedPosition;
     }
 }
