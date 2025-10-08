@@ -8,7 +8,7 @@ public class SlideWindow : MonoBehaviour
 
     private Vector3 closedPosition;
     private Vector3 openPosition;
-    private bool isOpening = false;
+    public bool isOpening = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,6 +29,11 @@ public class SlideWindow : MonoBehaviour
         if (isOpening && canOpen)
         {
             transform.position = Vector3.MoveTowards(transform.position, openPosition, slideSpeed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, openPosition) <0.01f)
+            {
+                isOpening = true;
+            }
         }
     }
 
