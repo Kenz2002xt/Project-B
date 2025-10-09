@@ -8,6 +8,7 @@ public class NPCSpawner : MonoBehaviour
     public SlideWindow windowScript;
     public ShiftManager shiftManager;
     public AudioSource knockSound;
+    public PestGenerator pestSpawner;
 
     public GameObject dialougePanel;
     public TMP_Text dialougeText;
@@ -72,7 +73,17 @@ public class NPCSpawner : MonoBehaviour
 
     private void OnAccept()
     {
-        Debug.Log("npc accepted, triggering spawn pest SpawnPest() later");
+        Debug.Log("npc accepted, triggering spawn pest");
+
+        if (pestSpawner != null)
+        {
+            pestSpawner.GeneratePest();
+            Debug.Log("pest successfully spawned");
+        }
+        else
+        {
+            Debug.LogWarning("No pest spawner found");
+        }
 
         dialougePanel.SetActive(false);
         npcSpawned = false;
