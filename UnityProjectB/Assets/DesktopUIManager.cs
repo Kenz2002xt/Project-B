@@ -1,5 +1,8 @@
 using UnityEngine;
 
+//this script manages the desktop UI by opening the specific panels within the canvas (xray, blood work, sound, info
+//This ensures whichever panel is selected it is brought to the front no matter the scene heirarchy using "SetAsLastSibling"
+
 public class DesktopUIManager : MonoBehaviour
 {
     public GameObject panelXray;
@@ -32,6 +35,7 @@ public class DesktopUIManager : MonoBehaviour
         panelInfo.transform.SetAsLastSibling();
     }
 
+    //function is used by a close button in the scene
     public void CloseCurrentPanel(GameObject panelToClose)
     {
         panelToClose.SetActive(false);

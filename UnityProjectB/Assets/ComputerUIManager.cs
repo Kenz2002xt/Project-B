@@ -1,5 +1,9 @@
 using UnityEngine;
 
+//simple script to manage switching between the main computer UI and the internal desktop computer UI
+//this is done by enabling and diabling the respective canvases
+
+
 public class ComputerUIManager : MonoBehaviour
 {
 

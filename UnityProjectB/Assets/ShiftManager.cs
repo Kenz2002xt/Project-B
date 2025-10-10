@@ -6,73 +6,77 @@ using UnityEngine.UI;
 
 public class ShiftManager : MonoBehaviour
 {
-    public float shiftDuration = 300f;
-    private float shiftTimer;
-    private float shiftStartHour = 1f;
+    public float shiftDuration = 300f; //length of a shift in seconds
+    private float shiftTimer; //timer for the active shift
+    private float shiftStartHour = 3f;
     private float shiftEndHour = 6f;
-    private bool shiftActive = false;
+    private bool shiftActive = false; //will track if a shift is currently running
 
     public TMP_Text timerText;
     public SlideWindow windowScript;
     public Button startShiftButton;
 
+    public Button[] decisionButtons;
+
+    private void Start()
+    {
+        SetDecisionButtons(false); //disable the decision buttons at the start of the shift
+    }
     // Update is called once per frame
     void Update()
     {
+        //only start the timer if the shift is active 
         if (shiftActive)
         {
             shiftTimer = shiftTimer - Time.deltaTime;
+
+            //if timer reaches 0 then end the shfit
             if (shiftTimer <= 0)
             {
                 EndShift();
             }
-            UpdateTimerUI();
+            UpdateTimerUI(); //update UI with current shift time
         }
     }
 
+    //start the shift
     public void StartShift()
     {
-
-        shiftTimer = shiftDuration;
-        shiftActive = true;
-        windowScript.canOpen = true;
+        windowScript.canOpen = false; //window can't open until npc arrives
+        FindFirstObjectByType<NPCSpawner>()?.ResetNPCState(); //resets the NPCs for new shift to avoid bugs as long as NPC spawner isnt null
+        shiftTimer = shiftDuration; //set the timer to full shift duration
+        shiftActive = true; //mark the shift as active
         Debug.Log("Shift Started!");
 
         if (startShiftButton != null)
         {
-            startShiftButton.interactable = false;
+            startShiftButton.interactable = false; //clock in button to start shift is inactive
         }
 
-        StartCoroutine(CaseLoop());
+        timerText.gameObject.SetActive(true); //show the timer text on the UI
     }
 
-    private IEnumerator CaseLoop()
-    {
-        while (shiftActive)
-        {
-            SpawnCase();
-            yield return new WaitForSeconds(5f);
-        }
-    }
-
-    private void SpawnCase()
-    {
-        Debug.Log("NPC arrived new case started");
-    }
-
+    
+    //ends the shift
     private void EndShift()
     {
-        shiftActive = false;
-        windowScript.canOpen = false;
-        windowScript.CloseWindow();
+        DayManager.instance.EndDay(); //tell the DayManager the day has ended
+        shiftActive = false; //set shift as inactive
+        windowScript.canOpen = false; //window cannot open
+        windowScript.CloseWindow(); //close the window if open
         Debug.Log("Shift ended");
 
         if (startShiftButton != null)
         {
-            startShiftButton.interactable = true;
+            startShiftButton.interactable = true; //re-enable the start button for next shift
         }
+
+        SetDecisionButtons(false); //disable decision buttons since shift is over
+        timerText.gameObject.SetActive(false); //hide timer/UI
     }
 
+    //update the timer UI to show in game time
+    //coded with help from "How to Make a Timer in Unity" by mixedkreations.com
     private void UpdateTimerUI()
     {
         if (timerText != null)
@@ -88,8 +92,25 @@ public class ShiftManager : MonoBehaviour
         }
     }
 
+
+    //returns the bool if shfit is currently active
     public bool IsShiftActive()
     {
         return shiftActive;
+    }
+
+    //called when the player makes a choice in a case
+    public void PlayerChose(PestGenerator.PestStatus playerChoice)
+    {
+        DecisionManager.Instance.EvaluateDecision(playerChoice); //send to the decision manaeger
+    }
+
+    //enable or disable all decision buttons logic 
+    public void SetDecisionButtons(bool state)
+    {
+        foreach (Button btn in decisionButtons)
+        {
+            btn.interactable = state; //each buttons interactable state
+        }
     }
 }
