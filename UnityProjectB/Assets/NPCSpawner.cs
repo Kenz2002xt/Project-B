@@ -143,8 +143,8 @@ public class NPCSpawner : MonoBehaviour
     {
         string[] dialouges = new string[]
         {
-            "I heard some scratching in the vents and found this...",
-            "He used to be my sisters pet, but he's been acting strange",
+            "I heard some scratching in my house and found this...",
+            "Morning. I just need this cleared so I can call my boss.",
             "I was told to bring this to you",
             "Can you take a look at this?",
             "This pest facility is stinking up the town, take this",
@@ -152,7 +152,22 @@ public class NPCSpawner : MonoBehaviour
             "All I hear all night is movement in the walls",
             "I just got this thing, been actin' weird though",
             "This thing ruined my garden, might be one a them weird mutants",
-            "All you people do is harm these poor animals. Just take it"
+            "All you people do is harm these poor animals. Just take it",
+            "Do I need an appointment, or is this the right window?",
+            "They said you decide what happens next...is that true?",
+            "Man, I'd hate to have your job- take this thing would you",
+            "I brought everything, just like they told me I swear",
+            "I don't want to talk. Just clear it and let me go",
+            "It's not dangerous it's just an animal. You'll clear it right?",
+            "If you burn it, make sure it feels nothing. Please",
+            "This thing ain't right",
+            "I've done this a dozen times. Just take it",
+            "You're new here aren't you? Ha, wonder what happened to the last one",
+            "I was told this wouldn't take long",
+            "You inspectors just like the power, don't you?",
+            "Sometimes it breathes. Sometimes it doesn't",
+            "Tell your boss to stop pumping smoke into our town",
+            "Smells like death in here...no offense"
         };
 
         return dialouges[Random.Range(0, dialouges.Length)]; //pick a random string
@@ -170,6 +185,7 @@ public class NPCSpawner : MonoBehaviour
         npcWaiting = false;
         npcSpawned = false;
         canSpawnNextNPC = true;
+        caseInProgress = false;
 
         if (knockSound != null && knockSound.isPlaying)
             knockSound.Stop();
