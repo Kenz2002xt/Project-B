@@ -12,6 +12,9 @@ public class DecisionManager : MonoBehaviour
     public int currentMoney = 0; //tracks earned/lost money
     public TMP_Text costText; //displays current money and quota
 
+    public AudioSource correct; //sound effects
+    public AudioSource incorrect; 
+
     private DayManager dayManager; //referencing the day manager for access to the daily set quotas
 
     //before starting, initiallize the singletons/references
@@ -41,11 +44,13 @@ public class DecisionManager : MonoBehaviour
         if (currentPest.Status == playerChoice) //if match...
         {
             currentMoney = currentMoney + cost; //add money
+            correct?.Play(); //play ding
             Debug.Log("Correct decision");
         }
         else //if non match...
         {
             currentMoney = currentMoney - cost; //subtract money (can go negative)
+            incorrect?.Play(); //play buzzer
             Debug.Log("Incorrect decision");
         }
 

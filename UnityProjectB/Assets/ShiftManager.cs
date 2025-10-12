@@ -13,6 +13,7 @@ public class ShiftManager : MonoBehaviour
     private bool shiftActive = false; //will track if a shift is currently running
 
     public TMP_Text timerText;
+    public TMP_Text infoText;
     public SlideWindow windowScript;
     public Button startShiftButton;
 
@@ -54,9 +55,20 @@ public class ShiftManager : MonoBehaviour
         }
 
         timerText.gameObject.SetActive(true); //show the timer text on the UI
+
+        infoText.gameObject.SetActive(true); //show the shift helper text
+        StartCoroutine(HideInfoText());
     }
 
-    
+    //hide info text after 3 seconds
+    private System.Collections.IEnumerator HideInfoText()
+    {
+        yield return new WaitForSeconds(3f);
+        infoText.gameObject.SetActive(false);
+
+    }
+
+
     //ends the shift
     private void EndShift()
     {

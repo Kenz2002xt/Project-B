@@ -29,9 +29,14 @@ public class DayManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //set transiton panel to fully black at the start
+        //set transiton panel to fully opaque at the start
         if (FadePanel != null)
-            FadePanel.color = new Color(0, 0, 0, 1);
+        {
+            Color c = FadePanel.color;
+            c.a = 1f; //only targets alpha
+            FadePanel.color = c;
+        }
+
 
         StartNewDay(); //begin the first day
     }
@@ -42,7 +47,13 @@ public class DayManager : MonoBehaviour
         //as long as the fnal day isn't reached
         if (currentDay <= maxDays)
         {
-            FadePanel.color = new Color(0, 0, 0, 1); //show black screen
+            if (FadePanel != null)
+            {
+                Color c = FadePanel.color;
+                c.a = 1f; //only targets alpha
+                FadePanel.color = c;
+            }
+
             ShowDayMessage(); //dsiplay text
             DecisionManager.Instance.ResetMoney(); //reset the money
             Invoke("HideBlackPanel", 3f); //fade after 3 seconds
@@ -52,6 +63,7 @@ public class DayManager : MonoBehaviour
             Debug.Log("Game Won EndDay");
         }
     }
+
 
     public void EndDay()
     {
@@ -73,7 +85,7 @@ public class DayManager : MonoBehaviour
         if (DayText != null)
         {
             int dayIndex = currentDay - 1; //convert to an array index
-            DayText.text = $"{weekDays[dayIndex]} - Quota: ${quotas[dayIndex]}"; //easy to write display text
+            DayText.text = $"{weekDays[dayIndex]}\nQuota: ${quotas[dayIndex]}"; //easy to write display text
             DayText.gameObject.SetActive(true); //show the UI text
             Invoke("HideDayText", 3f); //hide after 3 seconds
         }
@@ -90,7 +102,11 @@ public class DayManager : MonoBehaviour
     void HideBlackPanel()
     {
         if (FadePanel != null)
-            FadePanel.color = new Color(0, 0, 0, 0);
+        {
+            Color c = FadePanel.color;
+            c.a = 0f; //only targets alpha
+            FadePanel.color = c;
+        }
     }
 
 
