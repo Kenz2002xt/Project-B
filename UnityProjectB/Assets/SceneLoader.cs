@@ -1,0 +1,25 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SceneLoader : MonoBehaviour
+{
+    public void PlayGame()
+    {
+        SceneManager.LoadScene("MainScene");
+    }
+
+    public void OpenControls()
+    {
+        SceneManager.LoadScene("ControlsScene");
+    }
+
+    public void OpenCredits ()
+    {
+        SceneManager.LoadScene("CreditsScene");
+    }
+
+    public void OpenMainMenu()
+    {
+        SceneManager.LoadScene("MainMenuScene");
+    }
+}
