@@ -12,8 +12,13 @@ public class DecisionManager : MonoBehaviour
     public int currentMoney = 0; //tracks earned/lost money
     public TMP_Text costText; //displays current money and quota
 
+    private int incorrectAmount = 0; //tracks how many wrong decisions made
+    private int maxIncorrectAllowed = 3; //lose after 3 incorrect decisions a day
+
     public AudioSource correct; //sound effects
-    public AudioSource incorrect; 
+    public AudioSource incorrect;
+    public ParticleSystem correctParticles;
+    public ParticleSystem wrongParticles;
 
     private DayManager dayManager; //referencing the day manager for access to the daily set quotas
 
@@ -46,12 +51,29 @@ public class DecisionManager : MonoBehaviour
             currentMoney = currentMoney + cost; //add money
             correct?.Play(); //play ding
             Debug.Log("Correct decision");
+            if (correctParticles != null)
+            {
+                correctParticles.Play();
+            }
         }
         else //if non match...
         {
             currentMoney = currentMoney - cost; //subtract money (can go negative)
             incorrect?.Play(); //play buzzer
             Debug.Log("Incorrect decision");
+
+            incorrectAmount++;
+
+            if (incorrectAmount >= maxIncorrectAllowed)
+            {
+                FindFirstObjectByType<DayManager>().sceneLoader.OpenGameOver();
+                return;
+            }
+
+            if (wrongParticles != null)
+            {
+                wrongParticles.Play();
+            }
         }
 
         UpdateMoneyUI();
@@ -82,6 +104,7 @@ public class DecisionManager : MonoBehaviour
     public void ResetMoney()
     {
         currentMoney = 0;
+        incorrectAmount = 0;
         UpdateMoneyUI() ;
     }
 }

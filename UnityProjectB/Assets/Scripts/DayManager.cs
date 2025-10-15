@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class DayManager : MonoBehaviour
 {
     public static DayManager instance; //static instance for singleton access
+    public SceneLoader sceneLoader;
 
     public int currentDay = 1; //tracks current day number
     public int maxDays = 5; //max number of days
@@ -19,7 +20,10 @@ public class DayManager : MonoBehaviour
     private string[] weekDays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
 
     //array for daily quota values
-    private int[] quotas = {250, 500, 650, 800, 900};
+    private int[] quotas = {100, 150, 200, 250, 300};
+
+    public GameObject InstructionsPanel;
+    private bool firstTime = true;
 
     private void Awake()
     {
@@ -38,8 +42,15 @@ public class DayManager : MonoBehaviour
             FadePanel.color = c;
         }
 
-
-        StartNewDay(); //begin the first day
+        if (firstTime && InstructionsPanel != null)
+        {
+            InstructionsPanel.SetActive(true);
+            firstTime = false;
+        }
+        else
+        {
+            StartNewDay(); //begin the first day
+        }
     }
 
     // Update is called once per frame
@@ -69,12 +80,18 @@ public class DayManager : MonoBehaviour
 
     public void EndDay()
     {
+        if (DecisionManager.Instance.currentMoney < GetTodayQuota())
+        {
+            sceneLoader.OpenGameOver();
+            return;
+        }
         currentDay++; //increment the day count at the end of each shift
 
         //if the last day is passed then game over
         if (currentDay > maxDays)
         {
             Debug.Log("Game Won EndDay");
+            sceneLoader.OpenWin();
         }
         else
         {
@@ -116,5 +133,15 @@ public class DayManager : MonoBehaviour
     public int GetTodayQuota()
     {
         return quotas[currentDay - 1];
+    }
+
+    public void CloseInstructions()
+    {
+        if (InstructionsPanel != null)
+        {
+            InstructionsPanel.gameObject.SetActive(false);
+        }
+
+        StartNewDay();
     }
 }

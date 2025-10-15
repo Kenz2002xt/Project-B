@@ -13,7 +13,7 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("ControlsScene");
     }
 
-    public void OpenCredits ()
+    public void OpenCredits()
     {
         SceneManager.LoadScene("CreditsScene");
     }
@@ -21,5 +21,15 @@ public class SceneLoader : MonoBehaviour
     public void OpenMainMenu()
     {
         SceneManager.LoadScene("MainMenuScene");
+    }
+
+    public void OpenWin()
+    {
+        SceneManager.LoadScene("WinScene");
+    }
+
+    public void OpenGameOver()
+    {
+        SceneManager.LoadScene("GameOverScene");
     }
 }
