@@ -18,6 +18,7 @@ public class DayManager : MonoBehaviour
 
     //array for weekday names
     private string[] weekDays = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+    public TMP_Text dayOfWeek;
 
     //array for daily quota values
     private int[] quotas = {100, 150, 200, 250, 300};
@@ -69,6 +70,8 @@ public class DayManager : MonoBehaviour
             cashSound?.Play(); //play knock sound
             ShowDayMessage(); //dsiplay text
             DecisionManager.Instance.ResetMoney(); //reset the money
+            int dayIndex = currentDay - 1;
+            dayOfWeek.text = weekDays[dayIndex];
             Invoke("HideBlackPanel", 3f); //fade after 3 seconds
         }
         else
@@ -135,6 +138,7 @@ public class DayManager : MonoBehaviour
         return quotas[currentDay - 1];
     }
 
+    //deactivates the instruction panel
     public void CloseInstructions()
     {
         if (InstructionsPanel != null)

@@ -17,6 +17,8 @@ public class DecisionManager : MonoBehaviour
 
     public AudioSource correct; //sound effects
     public AudioSource incorrect;
+
+    //particle system integration for actions
     public ParticleSystem correctParticles;
     public ParticleSystem wrongParticles;
 

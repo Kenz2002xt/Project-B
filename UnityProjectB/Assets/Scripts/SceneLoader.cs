@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//system to load in scenes 
+//used to attach to buttons throughout gameplay
+
 public class SceneLoader : MonoBehaviour
 {
     public void PlayGame()
